@@ -28,9 +28,10 @@ pub(crate) async fn run_client(opts: Opts) {
     let client_addr = resolve_ipv4_connection_addr(opts.addr, opts.port)
         .expect("Unable to resolve client address");
 
-    let client_socket = UdpSocket::bind(client_addr).await.unwrap();
+    let client_socket = UdpSocket::bind(format!("0.0.0.0:{}", opts.port)).await.unwrap();
 
-    println!("Client is bound to {}", client_addr);
+    println!("Client address: {}", client_addr);
+    println!("Client socket: {:?}", client_socket);
 
     let (outbound, inbound) = hydroflow::util::udp_lines(client_socket);
 
